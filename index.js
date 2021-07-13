@@ -32,12 +32,12 @@ function differNameSearcher(currentDirPath, callback) {
 
 let resultFileNames = [];
 
-differNameSearcher(dirPathToSearch, async function (filePath) {
+differNameSearcher(dirPathToSearch, async (filePath) => {
     try {
         const splitNames = filePath.split('\\');
         const fileNameToCheck = splitNames.pop();
 
-        await fs.readFile(mainListPath, function (err, data)  {
+        await fs.readFile(mainListPath, (err, data) => {
             const arrayOfFileNames = data.toString().split(',');
 
             if (err) {
@@ -49,11 +49,13 @@ differNameSearcher(dirPathToSearch, async function (filePath) {
 
                 if (similarity >= 0.1) {
                     if (!resultFileNames.includes(fileNameToCheck)) {
+                        if (filePath.includes(fileNameToCheck)) console.log(filePath);
+                        console.log(fileNameToCheck);
+                        console.log('*************');
                         resultFileNames.push(fileNameToCheck);
                     }
                 }
             })
-            console.log(resultFileNames)
         })
 
     } catch (e) {
