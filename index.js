@@ -2,10 +2,7 @@ const fs = require('fs');
 const path = require('path');
 const stringSimilarity = require('string-similarity');
 
-const dirPathToSearch = path.join(__dirname, 'main');
-const mainListPath = path.join(__dirname, 'main_list.txt');
-
-module.exports = function diff() {
+module.exports.diff = (dirPath, list) => {
 
     function differNameSearcher(currentDirPath, callback) {
         try {
@@ -34,12 +31,12 @@ module.exports = function diff() {
 
     let resultFileNames = [];
 
-    differNameSearcher(dirPathToSearch, async (filePath) => {
+    differNameSearcher(dirPath, async (filePath) => {
         try {
-            const splitNames = filePath.split('\\');
+            const splitNames = filePath.split('/');
             const fileNameToCheck = splitNames.pop();
 
-            await fs.readFile(mainListPath, (err, data) => {
+            await fs.readFile(list, (err, data) => {
                 const arrayOfFileNames = data.toString().split(',');
 
                 if (err) {
@@ -64,4 +61,4 @@ module.exports = function diff() {
             throw new Error('error');
         }
     });
-};
+}
